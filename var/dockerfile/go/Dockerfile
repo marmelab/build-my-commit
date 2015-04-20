@@ -1,1 +1,3 @@
 FROM golang
+
+WORKDIR /srv
