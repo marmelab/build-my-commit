@@ -1,0 +1,5 @@
+watcher:
+    build: ./var/dockerfile/go/
+    volumes:
+        - .:/srv
+    command: sleep 123456789
