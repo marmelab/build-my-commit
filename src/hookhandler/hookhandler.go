@@ -4,7 +4,7 @@ import "io"
 import "io/ioutil"
 import "net/http"
 import "log"
-import "payloadparser"
+import "../payloadparser"
 
 func returnError(responseWriter http.ResponseWriter, status int, msg string) {
     responseWriter.WriteHeader(http.StatusBadRequest)
