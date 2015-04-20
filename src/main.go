@@ -1,9 +1,9 @@
 package main
 
-//import "os"
-import "net/http"
-import "log"
-//import "./hookhandler"
+import (
+	"log"
+	"net/http"
+)
 
 func main() {
 	http.HandleFunc("/", HookHandler)
