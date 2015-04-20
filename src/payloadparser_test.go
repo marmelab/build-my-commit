@@ -4,67 +4,54 @@ import (
 	"testing"
 )
 
-func TestParsePayloadShouldReturnFalseAndErrorWhenNotSuppliedJson(t *testing.T) {
+func TestParsePayloadShouldFailWhenNotSuppliedJson(t *testing.T) {
 	payload := []byte(`invalid_json`)
-	isValid, err := ParsePayload(payload)
+	pushEvent, err := ParsePayload(payload)
 
 	if err == nil {
 		t.Errorf("ParsePayload() should have failed with error")
 	}
 
-	if isValid {
-		t.Errorf("ParsePayload() should have returned false")
+	if pushEvent.Ref != "" {
+		t.Errorf("ParsePayload() should have returned an empty PushEvent")
 	}
 }
 
-func TestParsePayloadShouldReturnFalseAndErrorWhenSuppliedInvalidJson(t *testing.T) {
+func TestParsePayloadShouldFailWhenSuppliedInvalidJson(t *testing.T) {
 	payload := []byte(`{"toto": "invalid_json"}`)
-	isValid, err := ParsePayload(payload)
+	pushEvent, err := ParsePayload(payload)
 
 	if err == nil {
 		t.Errorf("ParsePayload() should have failed with error")
 	}
 
-	if isValid {
-		t.Errorf("ParsePayload() should have returned false")
+	if pushEvent.Ref != "" {
+		t.Errorf("ParsePayload() should have returned an empty PushEvent")
 	}
 }
 
-func TestParsePayloadShouldReturnFalseAndErrorWhenSuppliedInvalidRefType(t *testing.T) {
+func TestParsePayloadShouldFailWhenSuppliedInvalidRefType(t *testing.T) {
 	payload := []byte(`{"ref": 42}`)
-	isValid, err := ParsePayload(payload)
+	pushEvent, err := ParsePayload(payload)
 
 	if err == nil {
 		t.Errorf("ParsePayload() should have failed with error")
 	}
 
-	if isValid {
-		t.Errorf("ParsePayload() should have returned false")
+	if pushEvent.Ref != "" {
+		t.Errorf("ParsePayload() should have returned an empty PushEvent")
 	}
 }
 
-func TestParsePayloadShouldReturnFalseWhenSuppliedValidGithubPayloadNotTargettingMaster(t *testing.T) {
-	payload := []byte(`{"ref": "refs/heads/develop"}`)
-	isValid, err := ParsePayload(payload)
-
-	if err != nil {
-		t.Errorf("ParsePayload() failed with error %q", err)
-	}
-
-	if isValid {
-		t.Errorf("ParsePayload() should have returned false")
-	}
-}
-
-func TestParsePayloadShouldReturnTrueWhenSuppliedValidGithubPayloadTargettingMaster(t *testing.T) {
+func TestParsePayloadShouldReturnTrueWhenSuppliedValidGithubPayload(t *testing.T) {
 	payload := []byte(`{"ref": "refs/heads/master"}`)
-	isValid, err := ParsePayload(payload)
+	pushEvent, err := ParsePayload(payload)
 
 	if err != nil {
 		t.Errorf("ParsePayload() failed with error %q", err)
 	}
 
-	if !isValid {
-		t.Errorf("ParsePayload() should have returned false")
+	if pushEvent.Ref != "refs/heads/master" {
+		t.Errorf("ParsePayload() should have returned a PushEvent with ref equal to %q", "refs/heads/master")
 	}
 }

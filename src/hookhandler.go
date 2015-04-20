@@ -3,7 +3,10 @@ package main
 import (
 	"io/ioutil"
 	"net/http"
+	//"os/exec"
 )
+
+const GITHUB_REFERENCE = "refs/heads/master"
 
 func returnError(responseWriter http.ResponseWriter, status int, msg string) {
 	responseWriter.WriteHeader(http.StatusBadRequest)
@@ -24,16 +27,14 @@ func HookHandler(responseWriter http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	isValid, err := ParsePayload(body)
+	pushEvent, err := ParsePayload(body)
 
 	if err != nil {
 		returnError(responseWriter, 400, "Invalid method")
 		return
 	}
 
-	if isValid {
-		// Request should be handled
-
+	if pushEvent.Ref == GITHUB_REFERENCE {
 		// 1. Clone the project
 
 		// 2. Validate that the project has a DockerFile
