@@ -4,7 +4,7 @@ go:
   - 1.4.2
 
 script:
-- cd src/
-- go test ./...
+- cd src
+- go test
 
-env: GOPATH /usr/src/watcher/src
+env: GOPATH /srv

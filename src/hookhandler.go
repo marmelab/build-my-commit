@@ -1,9 +1,7 @@
 package main
 
 import (
-	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 )
 
@@ -34,10 +32,22 @@ func HookHandler(responseWriter http.ResponseWriter, request *http.Request) {
 	}
 
 	if isValid {
-		log.Println("Request should be parsed")
-	} else {
-		log.Println("Request should not be parsed")
-	}
+		// Request should be handled
 
-	io.WriteString(responseWriter, "foo")
+		// 1. Clone the project
+
+		// 2. Validate that the project has a DockerFile
+
+		// 3. Build the docker container
+
+		// 4. Mount the docker container
+
+		// 5. Check wether the ouput has changed with git diff
+
+		// 6. Commit & push the output if necessary
+		return
+	} else {
+		// Request should not be handled, just return
+		return
+	}
 }
