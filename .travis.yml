@@ -6,3 +6,5 @@ go:
 script:
 - cd src/
 - go test ./...
+
+env: GOPATH /usr/src/watcher/src

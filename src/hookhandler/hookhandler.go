@@ -4,7 +4,6 @@ import "io"
 import "io/ioutil"
 import "net/http"
 import "log"
-import "../payloadparser"
 
 func returnError(responseWriter http.ResponseWriter, status int, msg string) {
     responseWriter.WriteHeader(http.StatusBadRequest)
@@ -24,7 +23,7 @@ func HookHandler(responseWriter http.ResponseWriter, request *http.Request){
         returnError(responseWriter, 500, "")
     }
 
-    isValid, err := payloadparser.ParsePayload(body)
+    isValid, err := ParsePayload(body)
 
     if err != nil {
         returnError(responseWriter, 400, "Invalid method")
