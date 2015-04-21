@@ -5,7 +5,7 @@ import (
 	"errors"
 )
 
-func ParsePayload(payload []byte) (pushEvent PushEvent, err error) {
+func parsePayload(payload []byte) (pushEvent pushEvent, err error) {
 	err = json.Unmarshal(payload, &pushEvent)
 
 	if err != nil {
