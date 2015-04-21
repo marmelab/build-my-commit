@@ -1,0 +1,10 @@
+language: go
+
+go:
+  - 1.4.2
+
+script:
+- cd src
+- go test
+
+env: GOPATH /srv
