@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"os"
 	"testing"
 )
@@ -19,6 +20,17 @@ func TestCloneRepositoryShouldFailWhenPassedInvalidGitUrl(t *testing.T) {
 	if err == nil {
 		t.Errorf("CloneRepository() should have failed")
 	}
+}
+
+func exists(path string) (bool, error) {
+	_, err := os.Stat(path)
+	if err == nil {
+		return true, nil
+	}
+	if os.IsNotExist(err) {
+		return false, nil
+	}
+	return false, err
 }
 
 func TestCloneRepositoryShouldPassWhenPassedValidGitUrl(t *testing.T) {

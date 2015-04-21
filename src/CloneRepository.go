@@ -9,47 +9,28 @@ import (
 
 var gitCloneUrlRegexp = regexp.MustCompile(`^https:\/\/github\.com\/.+\/(.+)\.git$`)
 
-func exists(path string) (bool, error) {
-	_, err := os.Stat(path)
-	if err == nil {
-		return true, nil
-	}
-	if os.IsNotExist(err) {
-		return false, nil
-	}
-	return false, err
-}
-
 func CloneRepository(gitCloneUrl string) (path string, err error) {
 	// Validate the git url
 	matches := gitCloneUrlRegexp.FindStringSubmatch(gitCloneUrl)
 
-	if gitCloneUrl == "" || len(matches) < 2 {
+	if gitCloneUrl == "" {
 		return "", errors.New("Invalid git clone url")
 	}
 
-	outputPath := matches[1]
-
-	// Build the command	
-	args := []string{ "clone", gitCloneUrl }
+	// Build the command
+	args := []string{"clone", gitCloneUrl}
 	cmd := exec.Command("git", args...)
 
-	err = cmd.Start()
+	// TODO: capture output so that it may be saved later in order to report it to the user
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	err = cmd.Run()
 
 	if err != nil {
 		return "", err
 	}
 
-	err = cmd.Wait()
-
-	if err != nil {
-		return "", err
-	}
-
-	directoryExist, err := exists(outputPath)
-	if !directoryExist {
-		return "", err
-	}
-
+	outputPath := matches[1]
 	return outputPath, err
 }
