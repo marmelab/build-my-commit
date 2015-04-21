@@ -5,8 +5,6 @@ import (
 	"os"
 )
 
-type TestRunner struct{}
-
 func TestCloneRepositoryShouldFailWhenPassedEmptyUrl(t *testing.T) {
     _, err := CloneRepository("")
 
