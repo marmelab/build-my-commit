@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/", HookHandler)
+	http.HandleFunc("/", HandleHookRequest)
 	err := http.ListenAndServe(":80", nil)
 
 	if err != nil {
