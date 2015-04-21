@@ -8,14 +8,19 @@ import (
 )
 
 var gitCloneUrlRegexp = regexp.MustCompile(`^https:\/\/github\.com\/.+\/(.+)\.git$`)
+
 const GIT_COMMAND = "/usr/bin/git"
 const GIT_CLONE_COMMAND = "clone"
 
 func exists(path string) (bool, error) {
-    _, err := os.Stat(path)
-    if err == nil { return true, nil }
-    if os.IsNotExist(err) { return false, nil }
-    return false, err
+	_, err := os.Stat(path)
+	if err == nil {
+		return true, nil
+	}
+	if os.IsNotExist(err) {
+		return false, nil
+	}
+	return false, err
 }
 
 func CloneRepository(gitCloneUrl string) (path string, err error) {
@@ -46,7 +51,7 @@ func CloneRepository(gitCloneUrl string) (path string, err error) {
 
 	directoryExist, err := exists(outputPath)
 	if !directoryExist {
-        return "", err
+		return "", err
 	}
 
 	return outputPath, err
