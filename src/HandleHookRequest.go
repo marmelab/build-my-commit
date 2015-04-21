@@ -3,39 +3,45 @@ package main
 import (
 	"io/ioutil"
 	"net/http"
-	//"os/exec"
 )
 
 const GITHUB_REFERENCE = "refs/heads/master"
 
 func returnError(responseWriter http.ResponseWriter, status int, msg string) {
-	responseWriter.WriteHeader(http.StatusBadRequest)
+	responseWriter.WriteHeader(status)
 	responseWriter.Write([]byte(msg))
 	return
 }
 
-func HookHandler(responseWriter http.ResponseWriter, request *http.Request) {
+func HandleHookRequest(responseWriter http.ResponseWriter, request *http.Request) {
 	if request.Method != "POST" {
-		returnError(responseWriter, 400, "Invalid method")
+		returnError(responseWriter, http.StatusBadRequest, "Invalid method")
 		return
 	}
 
 	body, err := ioutil.ReadAll(request.Body)
 
 	if err != nil {
-		returnError(responseWriter, 500, "")
+		returnError(responseWriter, http.StatusInternalServerError, "Internal Server Error")
 		return
 	}
 
 	pushEvent, err := ParsePayload(body)
 
 	if err != nil {
-		returnError(responseWriter, 400, "Invalid method")
+		returnError(responseWriter, http.StatusBadRequest, "Invalid payload")
 		return
 	}
 
 	if pushEvent.Ref == GITHUB_REFERENCE {
 		// 1. Clone the project
+		// TODO: name the returned path variable and use it in step 2
+		_, err := CloneRepository(pushEvent.Repository.CloneUrl)
+
+		if err != nil {
+			returnError(responseWriter, http.StatusInternalServerError, "Internal Server Error")
+			return
+		}
 
 		// 2. Validate that the project has a DockerFile
 
