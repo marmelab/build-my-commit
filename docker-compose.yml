@@ -1,5 +1,10 @@
 watcher:
     build: ./var/dockerfile/go/
     volumes:
-        - .:/srv
+        - ./src:/srv
+        - /var/lib/docker:/var/lib/docker
+        - /var/lib/docker-compose:/var/lib/docker-compose
     command: sleep 123456789
+    privileged: true
+    ports:
+        - "3000:80"
