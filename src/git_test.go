@@ -5,9 +5,9 @@ import (
 )
 
 func TestCanCallGit(t *testing.T) {
-	err := git("version", "")
+	_, err := git("version", "")
 
 	if err != nil {
-		t.Errorf("git('version') should not have failed")
+		t.Errorf("git('version') should failed with error %q", err)
 	}
 }
