@@ -8,6 +8,7 @@ ENV GOPATH /srv
 RUN apt-get update
 RUN apt-get install -y curl
 RUN curl -s https://get.docker.io/ubuntu/ | sh
+# This allow our container to call host docker and starts other containers
 RUN echo 'DOCKER_OPTS="-H :2375 -H unix:///var/run/docker.sock"' >> /etc/default/docker
 
 # Install Docker Compose

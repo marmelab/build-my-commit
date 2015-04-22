@@ -2,19 +2,9 @@
 
 ## Your Dockerfile
 ```
-from ubuntu
+from ubuntu:14.04
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    make \
-    automake \
-    gcc \
-    build-essential \
-    g++ \
-    cpp \
-    libc6-dev \
-    man-db \
-    autoconf \
-    pkg-config
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential
 ```
 
 As stated before, we rely on `make` to build your project and **it must be available on your container**
