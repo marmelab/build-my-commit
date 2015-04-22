@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -65,10 +66,8 @@ func handleHookRequest(responseWriter http.ResponseWriter, request *http.Request
 			// 3. Build the docker container
 			err = docker(
 				"build",
-				"-t",
-				pushEvent.Repository.Name,
-				"-f",
-				path.Join(pushEvent.Repository.Name, dockerFilePath),
+				fmt.Sprintf("--tag %q", pushEvent.Repository.Name),
+				fmt.Sprintf("--file %q", path.Join(pushEvent.Repository.Name, dockerFilePath)),
 				pushEvent.Repository.Name)
 
 			if err != nil {
@@ -90,14 +89,11 @@ func handleHookRequest(responseWriter http.ResponseWriter, request *http.Request
 
 			err = docker(
 				"run",
-				"--name",
-				pushEvent.Repository.Name,
-				"-v",
-				repositoryFullPath+":/srv/",
+				fmt.Sprintf("--name %q", pushEvent.Repository.Name),
+				fmt.Sprintf("--volume %q:/srv/", repositoryFullPath),
 				pushEvent.Repository.Name,
 				"make",
-				"-f",
-				"/srv/Makefile",
+				"--file /srv/Makefile",
 				"build")
 
 			if err != nil {

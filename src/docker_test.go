@@ -1,49 +1,21 @@
 package main
 
 // TODO: restore this when Travis will supply a docker compatible environment
-/* NOTE:
-Currently, Travis run our tests inside a docker container running with an
-old kernel not supported by docker.
-
-Make sure to run those tests locally and to comment them before commiting
-so that Travis pass.
-*/
-
-/*
-
 import (
+	"log"
+	"os"
 	"testing"
 )
 
-func TestDockerShouldFailWhenPassedInvalidCommand(t *testing.T) {
-	err := docker("")
-
-	if err == nil {
-		t.Errorf("buildDocker() should have failed")
+func TestCanCallDocker(t *testing.T) {
+	if os.Getenv("CI") == "true" {
+		log.Println("Skip docker test on Travis as it does not support running docker")
+		return
 	}
-}
 
-func TestDockerShouldFailWhenPassedInvalidArguments(t *testing.T) {
-	err := docker("build")
-
-	if err == nil {
-		t.Errorf("buildDocker() should have failed")
-	}
-}
-
-func TestDockerShouldReturnWhenPassedValidBuildCommandAndArguments(t *testing.T) {
-	err := docker("build", "-t", "test-build-docker", "test-build-docker")
+	err := docker("version")
 
 	if err != nil {
-		t.Errorf("buildDocker() should not have failed")
+		t.Errorf("docker('version') should not have failed")
 	}
 }
-
-func TestDockerShouldReturnWhenPassedValidRunCommandAndArguments(t *testing.T) {
-	err := docker("run", "--name", "test-build-docker", "test-build-docker", "ls")
-
-	if err != nil {
-		t.Errorf("buildDocker() should not have failed")
-	}
-}
-*/
