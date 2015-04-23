@@ -1,9 +1,11 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 var _git = func(command string, arguments ...string) (string, error) {
@@ -20,7 +22,9 @@ var _git = func(command string, arguments ...string) (string, error) {
 		return "", err
 	}
 
-	return string(output), nil
+	strOutput := string(output)
+	strOutput = strings.Replace(strOutput, "\n", "", -1)
+	return strOutput, nil
 }
 
 var _gitWithContext = func(command string, contextPath string, arguments ...string) (string, error) {
@@ -41,10 +45,21 @@ var _gitWithContext = func(command string, contextPath string, arguments ...stri
 		return "", err
 	}
 
-	return string(output), nil
+	strOutput := string(output)
+	strOutput = strings.Replace(strOutput, "\n", "", -1)
+	return strOutput, nil
+}
+
+var _getCommitMessage = func(hash string) (string, error) {
+	if hash == "" {
+		return "", errors.New("hash cannot be empty")
+	}
+
+	return commitMessage + " " + hash, nil
 }
 
 var (
-	git            = _git
-	gitWithContext = _gitWithContext
+	git              = _git
+	gitWithContext   = _gitWithContext
+	getCommitMessage = _getCommitMessage
 )

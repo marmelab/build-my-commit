@@ -1,6 +1,5 @@
 package main
 
-// TODO: restore this when Travis will supply a docker compatible environment
 import (
 	"log"
 	"os"
