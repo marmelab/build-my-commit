@@ -6,7 +6,7 @@ import (
 )
 
 func validateRepository(repositoryPath string) (bool, error) {
-	dockerFileFullPath := path.Join(repositoryPath, dockerFilePath)
+	dockerFileFullPath := path.Join(repositoryPath, DockerFilePath)
 
 	dockerFileExists, err := exists(dockerFileFullPath)
 
@@ -27,7 +27,7 @@ func validateRepository(repositoryPath string) (bool, error) {
 		}
 
 		// If the last commit message isn't our standard commit message
-		if !strings.Contains(output, commitMessage) {
+		if !strings.Contains(output, CommitMessage) {
 			return true, nil
 		}
 	}

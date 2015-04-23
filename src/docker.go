@@ -5,7 +5,7 @@ import (
 	"os/exec"
 )
 
-func docker(command string, arguments ...string) error {
+var _docker = func(command string, arguments ...string) error {
 	// Build the command
 	args := []string{command}
 	args = append(args, arguments...)
@@ -17,3 +17,5 @@ func docker(command string, arguments ...string) error {
 
 	return cmd.Run()
 }
+
+var docker = _docker

@@ -1,6 +1,7 @@
 package main
 
-type pushEvent struct {
+// PushEvent defines a struct mapping the github push event payload in json
+type PushEvent struct {
 	Ref string `json:"ref"`
 
 	Repository struct {

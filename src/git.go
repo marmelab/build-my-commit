@@ -55,7 +55,7 @@ var _getCommitMessage = func(hash string) (string, error) {
 		return "", errors.New("hash cannot be empty")
 	}
 
-	return commitMessage + " " + hash, nil
+	return CommitMessage + " " + hash, nil
 }
 
 var (

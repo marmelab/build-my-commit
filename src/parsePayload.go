@@ -5,7 +5,7 @@ import (
 	"errors"
 )
 
-func parsePayload(payload []byte) (pushEvent pushEvent, err error) {
+var _parsePayload = func(payload []byte) (pushEvent PushEvent, err error) {
 	err = json.Unmarshal(payload, &pushEvent)
 
 	if err != nil {
@@ -18,3 +18,5 @@ func parsePayload(payload []byte) (pushEvent pushEvent, err error) {
 
 	return pushEvent, nil
 }
+
+var parsePayload = _parsePayload

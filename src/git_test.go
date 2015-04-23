@@ -32,7 +32,7 @@ func TestGetCommitMessageReturnDefaultCommitMessageAndHashWhenPassedValidHash(t 
 		t.Errorf("getCommitMessage('hash') have failed with error %q", err)
 	}
 
-	if msg != commitMessage+" "+hash {
-		t.Errorf("getCommitMessage('hash') should have returned \"%q\" but returned %q", commitMessage+" "+hash, msg)
+	if msg != CommitMessage+" "+hash {
+		t.Errorf("getCommitMessage('hash') should have returned \"%q\" but returned %q", CommitMessage+" "+hash, msg)
 	}
 }

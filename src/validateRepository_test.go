@@ -29,7 +29,7 @@ func TestValidateRepositoryShouldReturnFalseWhenLastCommithasBeenMadeByTool(t *t
 
 	// Mock the gitWithContext func
 	defer Patch(&gitWithContext, func(command string, contextPath string, arguments ...string) (string, error) {
-		return commitMessage, nil
+		return CommitMessage, nil
 	}).Restore()
 
 	shouldProcess, err := validateRepository("tests/ValidateRepositoryNoDockerFile")
