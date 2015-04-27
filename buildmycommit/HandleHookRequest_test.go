@@ -1,50 +1,74 @@
 package buildmycommit
 
-/*
 import (
-	"bytes"
-	"net/http"
-	"net/http/httptest"
+	//"bytes"
+	//"net/http"
+	//"net/http/httptest"
+	"github.com/marmelab/buildmycommit/states"
 	"testing"
 )
-*/
 
-/*
-func TestHandleHookRequestShouldFailIfVerbIsNotPost(t *testing.T) {
-	expected := 400
-	request, err := http.NewRequest("GET", "http://example.com/foo", nil)
+func TestNewStateReturnsAStateWithARandomlyGeneratedRepositoryPath(t *testing.T) {
+	state := newState(nil, nil)
 
-	if err != nil {
-		t.Errorf("handleHookRequest() failed with error %q", err)
-	}
-
-	responseRecorder := httptest.NewRecorder()
-	handleHookRequest(responseRecorder, request)
-
-	status := responseRecorder.Code
-
-	if status != expected {
-		t.Errorf("handleHookRequest() should have failed with status %v for a GET request, returned %v", expected, status)
+	if state.RepositoryPath == "" {
+		t.Errorf("new state should have a valid repository path")
 	}
 }
 
-func TestHandleHookRequestShouldFailWhenSentIncorrectJson(t *testing.T) {
-	expected := 400
-	body := []byte(`{"foo": "bar"}`)
-	request, err := http.NewRequest("POST", "http://test", bytes.NewBuffer(body))
-	request.Header.Set("Content-Type", "application/json")
-
-	if err != nil {
-		t.Errorf("handleHookRequest() failed with error %q", err)
-	}
-
-	responseRecorder := httptest.NewRecorder()
-	handleHookRequest(responseRecorder, request)
-
-	status := responseRecorder.Code
-
-	if status != expected {
-		t.Errorf("handleHookRequest() should have failed with status %v for a GET request, returned %v", expected, status)
-	}
+// TestMachine is the finite state machine (fsm)
+type TestMachine struct {
+	StateHandlers map[int]StateHandler
+	StartState    int
+	EndStates     map[int]bool
 }
-*/
+
+// AddState adds a state and its handler to the fsm
+func (machine TestMachine) AddState(state int, stateHandler StateHandler) {
+	machine.StateHandlers[state] = stateHandler
+}
+
+// AddEndState adds an end state
+func (machine TestMachine) AddEndState(endState int) {
+	machine.EndStates[endState] = true
+
+}
+
+// Execute the appropriate handler
+func (machine TestMachine) Execute(state states.State) error {
+	return nil
+}
+
+func TestHandleHookRequestShouldInitializeANewMachineWithStateValidateRequest(t *testing.T) {
+
+	newMachine = func(state int) HookRequestMachine {
+		expectedState := states.ValidateRequest
+
+		if state != expectedState {
+			t.Errorf("initial state should be %v", expectedState)
+		}
+
+		machine := TestMachine{
+			StartState:    state,
+			StateHandlers: map[int]StateHandler{},
+			EndStates:     map[int]bool{}}
+
+		return machine
+	}
+
+	HandleHookRequest(nil, nil)
+}
+
+func TestHandleHookRequestShouldAddStatesHandlersOnCorrectStates(t *testing.T) {
+
+	newMachine = func(state int) HookRequestMachine {
+		machine := TestMachine{
+			StartState:    state,
+			StateHandlers: map[int]StateHandler{},
+			EndStates:     map[int]bool{}}
+
+		return machine
+	}
+
+	HandleHookRequest(nil, nil)
+}

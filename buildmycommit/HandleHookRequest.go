@@ -16,17 +16,22 @@ import (
 const dockerFilePath = "build.Dockerfile"
 const commitMessage = "[build-my-commmit] Updated build from"
 
-// HandleHookRequest handles the git webhooks requests
-func HandleHookRequest(responseWriter http.ResponseWriter, request *http.Request) {
+func newState(responseWriter http.ResponseWriter, request *http.Request) states.State {
 	state := states.State{
 		ResponseWriter: responseWriter,
 		Request:        request,
 		RepositoryPath: tools.GenerateRandomID()}
 
-	machine := Machine{
-		StateHandlers: map[int]StateHandler{},
-		StartState:    states.ValidateRequest,
-		EndStates:     map[int]bool{}}
+	return state
+}
+
+var newMachine = NewMachine
+
+// HandleHookRequest handles the git webhooks requests
+func HandleHookRequest(responseWriter http.ResponseWriter, request *http.Request) {
+	state := newState(responseWriter, request)
+
+	machine := newMachine(states.ValidateRequest)
 
 	machine.AddState(states.ValidateRequest, statehandlers.NewValidateRequest("Invalid HTTP method"))
 	machine.AddState(states.ParsePayload, statehandlers.NewParsePayload(ioutil.ReadAll, json.Unmarshal, "Invalid webhook payload"))
