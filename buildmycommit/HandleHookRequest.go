@@ -2,15 +2,16 @@ package buildmycommit
 
 import (
 	"encoding/json"
+	"io/ioutil"
+	"net/http"
+	"os"
+	"path/filepath"
+
 	"github.com/marmelab/buildmycommit/docker"
 	"github.com/marmelab/buildmycommit/git"
 	"github.com/marmelab/buildmycommit/statehandlers"
 	"github.com/marmelab/buildmycommit/states"
 	"github.com/marmelab/buildmycommit/tools"
-	"io/ioutil"
-	"net/http"
-	"os"
-	"path/filepath"
 )
 
 const dockerFilePath = "build.Dockerfile"

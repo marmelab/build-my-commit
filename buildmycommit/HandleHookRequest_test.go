@@ -4,8 +4,9 @@ import (
 	//"bytes"
 	//"net/http"
 	//"net/http/httptest"
-	"github.com/marmelab/buildmycommit/states"
 	"testing"
+
+	"github.com/marmelab/buildmycommit/states"
 )
 
 func TestNewStateReturnsAStateWithARandomlyGeneratedRepositoryPath(t *testing.T) {
@@ -60,15 +61,20 @@ func TestHandleHookRequestShouldInitializeANewMachineWithStateValidateRequest(t 
 }
 
 func TestHandleHookRequestShouldAddStatesHandlersOnCorrectStates(t *testing.T) {
+	var testMachine TestMachine
 
 	newMachine = func(state int) HookRequestMachine {
-		machine := TestMachine{
+		testMachine = TestMachine{
 			StartState:    state,
 			StateHandlers: map[int]StateHandler{},
 			EndStates:     map[int]bool{}}
 
-		return machine
+		return testMachine
 	}
 
 	HandleHookRequest(nil, nil)
+
+	if len(testMachine.StateHandlers) != 15 {
+		t.Errorf("testMachine should have %v state handlers", 15)
+	}
 }
