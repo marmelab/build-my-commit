@@ -1,8 +1,9 @@
 package buildmycommit
 
 import (
-	"github.com/marmelab/buildmycommit/states"
 	"testing"
+
+	"github.com/marmelab/buildmycommit/states"
 )
 
 type TestHandlerForEndStateTesting struct {
@@ -32,9 +33,9 @@ func (stateHandler TestHandler2) Handle(state states.State) (int, states.State) 
 	return 42, states.State{Status: 42}
 }
 
-/*
 func TestNewMachineReturnsANewMachineWithSpecifiedStartState(t *testing.T) {
-	machine := NewMachine(42)
+	var machine Machine
+	machine = NewMachine(42).(Machine)
 
 	if machine.StartState != 42 {
 		t.Errorf("NewMachine should return a new machine initialized with StartState at 42")
@@ -42,7 +43,8 @@ func TestNewMachineReturnsANewMachineWithSpecifiedStartState(t *testing.T) {
 }
 
 func TestNewMachineReturnsANewMachineWithStateHandlersMap(t *testing.T) {
-	machine := NewMachine(42)
+	var machine Machine
+	machine = NewMachine(42).(Machine)
 
 	if machine.StateHandlers == nil {
 		t.Errorf("NewMachine should return a new machine initialized with StateHandlers map")
@@ -50,13 +52,13 @@ func TestNewMachineReturnsANewMachineWithStateHandlersMap(t *testing.T) {
 }
 
 func TestNewMachineReturnsANewMachineWithEndStatesMap(t *testing.T) {
-	machine := NewMachine(42)
+	var machine Machine
+	machine = NewMachine(42).(Machine)
 
 	if machine.EndStates == nil {
 		t.Errorf("NewMachine should return a new machine initialized with EndStates map")
 	}
 }
-*/
 
 func TestAddStateAddsTheState(t *testing.T) {
 	machine := Machine{

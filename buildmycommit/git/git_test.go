@@ -81,3 +81,11 @@ func TestGitWithContextPassesRepositoryOptionsBeforeGitCommand(t *testing.T) {
 	// Test should pass even if git is not installed on environment so we don't store the error returned by Git
 	git.ExecInContext("version", repositoryPath)
 }
+
+func TestGetGitCmdInitializeGitWithDefaultExec(t *testing.T) {
+	git := GetGitCmd()
+
+	if git.execCommand == nil {
+		t.Error("GetGitCmd should have initialized git with os/exec.Command")
+	}
+}
