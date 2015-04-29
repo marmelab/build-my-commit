@@ -2,9 +2,10 @@ package statehandlers
 
 import (
 	"fmt"
-	"github.com/marmelab/buildmycommit/states"
-	"github.com/marmelab/buildmycommit/docker"
 	"path"
+
+	"github.com/marmelab/buildmycommit/docker"
+	"github.com/marmelab/buildmycommit/states"
 )
 
 // BuildDocker is the StateHandler in charge of the BuildDocker state

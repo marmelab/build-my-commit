@@ -2,8 +2,9 @@ package statehandlers
 
 import (
 	"fmt"
-	"github.com/marmelab/buildmycommit/states"
+
 	"github.com/marmelab/buildmycommit/git"
+	"github.com/marmelab/buildmycommit/states"
 )
 
 // CommitBuild is the StateHandler in charge of the CommitBuild state
@@ -26,10 +27,6 @@ func (stateHandler CommitBuild) Handle(state states.State) (int, states.State) {
 
 	// Commit files
 	message := stateHandler.commitMessage + " " + state.PushEvent.HeadCommit.ID
-
-	if err != nil {
-		return states.InternalServerError, state
-	}
 
 	_, err = stateHandler.executeGitInContext(
 		"commit",

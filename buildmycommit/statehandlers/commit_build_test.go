@@ -2,14 +2,38 @@ package statehandlers
 
 import (
 	"errors"
-	"github.com/marmelab/buildmycommit/states"
 	"testing"
+
+	"github.com/marmelab/buildmycommit/states"
 )
 
-func TestCommitOutputShouldReturnStateInternalServerErrorWhenGitThrowsError(t *testing.T) {
+func TestCommitOutputShouldReturnStateInternalServerErrorWhenGitThrowsErrorOnAdd(t *testing.T) {
 	// Mock the executeGitWithContext func
 	executeGitWithContext := func(command string, repositoryPath string, arguments ...string) (string, error) {
-		return "", errors.New("42")
+		if command == "add" {
+			return "", errors.New("42")
+		}
+		return "", nil
+	}
+
+	state := states.State{RepositoryPath: "repository-path"}
+
+	handler := NewCommitBuild(executeGitWithContext, "commit-message")
+
+	newState, _ := handler.Handle(state)
+
+	if newState != states.InternalServerError {
+		t.Errorf("HandleStateCommitOutput returned %v instead of %v", newState, states.InternalServerError)
+	}
+}
+
+func TestCommitOutputShouldReturnStateInternalServerErrorWhenGitThrowsErrorOnCommit(t *testing.T) {
+	// Mock the executeGitWithContext func
+	executeGitWithContext := func(command string, repositoryPath string, arguments ...string) (string, error) {
+		if command == "commit" {
+			return "", errors.New("42")
+		}
+		return "", nil
 	}
 
 	state := states.State{RepositoryPath: "repository-path"}
