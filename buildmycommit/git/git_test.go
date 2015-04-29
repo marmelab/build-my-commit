@@ -8,7 +8,7 @@ import (
 
 func TestGitCallExecCommandWithGitCommand(t *testing.T) {
 	// Override the private package variable execCommand for testing purposes
-	execCommand = func(name string, arg ...string) *exec.Cmd {
+	execCommand := func(name string, arg ...string) *exec.Cmd {
 		if name != "git" {
 			t.Errorf("Expected %v to be git", name)
 		}
@@ -16,49 +16,15 @@ func TestGitCallExecCommandWithGitCommand(t *testing.T) {
 		return &exec.Cmd{}
 	}
 
-	// Dirty hack to prevent compilation warning about execCommand not being used
-	_ = execCommand
+	git := GetGitCmd(execCommand)
 
 	// Test should pass even if git is not installed on environment so we don't store the error returned by Git
-	Git("version", "")
+	git.Exec("version", "")
 }
-
-/*
-type fakeCmd struct{}
-
-func (cmd *fakeCmd) Output() ([]byte, error) {
-	return []byte("42"), nil
-}
-
-func TestGitReturnsExecCommandOutput(t *testing.T) {
-	expectedOutput := "42"
-
-	// Override the private package variable execCommand for testing purposes
-	execCommand = func(name string, arg ...string) *fakeCmd {
-		if name != "git" {
-			t.Errorf("Expected %v to be git", name)
-		}
-
-		cmd := fakeCmd{}
-
-		return &cmd
-	}
-
-	// Dirty hack to prevent compilation warning about execCommand not being used
-	_ = execCommand
-
-	// Test should pass even if git is not installed on environment so we don't store the error returned by Git
-	output, _ := Git("version", "")
-
-	if output != expectedOutput {
-		t.Errorf("Expected output to equal '%v', got '%v'", expectedOutput, output)
-	}
-}
-*/
 
 func TestGitCallExecCommandWithGitCommandOptions(t *testing.T) {
 	// Override the private package variable execCommand for testing purposes
-	execCommand = func(name string, arg ...string) *exec.Cmd {
+	execCommand := func(name string, arg ...string) *exec.Cmd {
 		argsLength := len(arg)
 
 		if argsLength != 2 {
@@ -76,11 +42,10 @@ func TestGitCallExecCommandWithGitCommandOptions(t *testing.T) {
 		return &exec.Cmd{}
 	}
 
-	// Dirty hack to prevent compilation warning about execCommand not being used
-	_ = execCommand
+	git := GetGitCmd(execCommand)
 
 	// Test should pass even if git is not installed on environment so we don't store the error returned by Git
-	Git("version", "--option")
+	git.Exec("version", "--option")
 }
 
 func TestGitWithContextPassesRepositoryOptionsBeforeGitCommand(t *testing.T) {
@@ -89,7 +54,7 @@ func TestGitWithContextPassesRepositoryOptionsBeforeGitCommand(t *testing.T) {
 	workTree := fmt.Sprintf("--work-tree=%v", repositoryPath)
 
 	// Override the private package variable execCommand for testing purposes
-	execCommand = func(name string, arg ...string) *exec.Cmd {
+	execCommand := func(name string, arg ...string) *exec.Cmd {
 		if name != "git" {
 			t.Errorf("Expected %v to be git", name)
 		}
@@ -111,9 +76,8 @@ func TestGitWithContextPassesRepositoryOptionsBeforeGitCommand(t *testing.T) {
 		return &exec.Cmd{}
 	}
 
-	// Dirty hack to prevent compilation warning about execCommand not being used
-	_ = execCommand
+	git := GetGitCmd(execCommand)
 
 	// Test should pass even if git is not installed on environment so we don't store the error returned by Git
-	GitWithContext("version", repositoryPath)
+	git.ExecInContext("version", repositoryPath)
 }

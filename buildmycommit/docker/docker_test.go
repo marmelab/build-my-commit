@@ -14,7 +14,7 @@ func TestCanGitCallExecCommandWithGitCommand(t *testing.T) {
 	}
 
 	// Override the private package variable execCommand for testing purposes
-	execCommand = func(name string, arg ...string) *exec.Cmd {
+	execCommand := func(name string, arg ...string) *exec.Cmd {
 		if name != "docker" {
 			t.Errorf("Expected %q to be docker", name)
 		}
@@ -22,11 +22,10 @@ func TestCanGitCallExecCommandWithGitCommand(t *testing.T) {
 		return &exec.Cmd{}
 	}
 
-	// Dirty hack to prevent compilation warning about execCommand not being used
-	_ = execCommand
+	docker := GetDockerCmd(execCommand)
 
 	// Test should pass even if docker is not installed on environment so we don't store the error returned by Docker
-	Docker("subcommand")
+	docker.Exec("subcommand")
 }
 
 func TestCanGitCallExecCommandWithGitCommandOptions(t *testing.T) {
@@ -36,7 +35,7 @@ func TestCanGitCallExecCommandWithGitCommandOptions(t *testing.T) {
 	}
 
 	// Override the private package variable execCommand for testing purposes
-	execCommand = func(name string, arg ...string) *exec.Cmd {
+	execCommand := func(name string, arg ...string) *exec.Cmd {
 		argsLength := len(arg)
 
 		if argsLength != 2 {
@@ -54,9 +53,16 @@ func TestCanGitCallExecCommandWithGitCommandOptions(t *testing.T) {
 		return &exec.Cmd{}
 	}
 
-	// Dirty hack to prevent compilation warning about execCommand not being used
-	_ = execCommand
+	docker := GetDockerCmd(execCommand)
 
 	// Test should pass even if docker is not installed on environment so we don't store the error returned by Docker
-	Docker("subcommand", "--option")
+	docker.Exec("subcommand", "--option")
+}
+
+func TestGetDockerCmdInitializeExecCommandWithDefaults(t *testing.T) {
+	docker := GetDockerCmd()
+
+	if docker.execCommand == nil {
+		t.Errorf("Expected docker.execCommand to be initialized")
+	}
 }
