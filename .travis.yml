@@ -16,7 +16,7 @@ script:
 - cd src
 - go test
 
-env: GOPATH /srv
+env: GOPATH ./
 
 script:
     - go test ./...

@@ -1,0 +1,11 @@
+mode: set
+github.com/marmelab/buildmycommit/HandleHookRequest.go:20.83,50.2 20 0
+github.com/marmelab/buildmycommit/Machine.go:22.72,24.2 1 0
+github.com/marmelab/buildmycommit/Machine.go:27.51,29.2 1 0
+github.com/marmelab/buildmycommit/Machine.go:32.53,33.76 1 0
+github.com/marmelab/buildmycommit/Machine.go:33.76,34.7 1 0
+github.com/marmelab/buildmycommit/Machine.go:34.7,38.22 3 0
+github.com/marmelab/buildmycommit/Machine.go:42.4,43.16 2 0
+github.com/marmelab/buildmycommit/Machine.go:38.22,40.5 1 0
+github.com/marmelab/buildmycommit/Machine.go:43.16,44.10 1 0
+github.com/marmelab/buildmycommit/Machine.go:45.5,48.5 2 0
